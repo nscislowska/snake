@@ -1,0 +1,44 @@
+.navbar{
+    overflow: hidden;
+    list-style: none;
+    position: sticky;
+}
+
+.navbar__bttn{
+    font-size: 1.2rem;
+    float: left;
+    padding: .2em 1em;
+    margin: .1rem .1rem;
+}
+
+.nav-top--primary{
+    background: var(--primary-bg-dark);
+}
+
+.navbar__bttn--primary{
+    background: var(--primary-bg);
+    border: 2px solid var(--primary-bg-dark);
+    border-radius: 8px;
+}
+
+.navbar__bttn--primary :hover{
+    background: var(--primary-bg-dark);
+    border-color: var(--primary-bg);
+}
+
+.navbar__bttn__text--primary {
+    text-decoration: none;
+    color: var(--primary-color);
+}
+
+.js-navbar__bttn--sublist{
+
+}
+
+.js-nav-left--slide-in{
+
+}
+
+.js-nav-left--slide-out{
+
+}

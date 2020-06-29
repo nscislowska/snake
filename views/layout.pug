@@ -3,5 +3,21 @@ html
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/nav-top.css')
+    link(rel='stylesheet', href='/stylesheets/nav-top--primary.css')
   body
-    block content
+    header(class="header header--primary")
+        h1="header"
+    nav
+        ul(class="navbar nav-top--primary")
+            li(class="navbar__bttn navbar__bttn--primary")
+                a(class="navbar__bttn__text--primary" href="#")="///"
+            li(class="navbar__bttn navbar__bttn--primary")
+                a(class="navbar__bttn__text--primary" href="#")="bbb"
+            li(class="navbar__bttn navbar__bttn--primary")
+                a(class="navbar__bttn__text--primary" href="#")="ccc"
+    main
+        block content
+    footer(class="footer--primary grid")="A foot"
+
+
