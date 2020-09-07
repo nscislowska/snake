@@ -1,13 +1,19 @@
-body {
+html, body {
   font: 1em "Lucida Grande", Helvetica, Arial, sans-serif;
+  height: 100%;
+  width: 100%;
 }
 
 :root {
-  --primary-bg: #92003c;
-  --primary-bg-dark: #63002a;
-  --primary-color: #efefef;
-  --primary-color-dark: #cccccc;
-  background: var(--primary-color);
+  --grey-50: hsl(0, 0%, 50%);
+  --grey-20: hsl(0, 0%, 20%);
+  --white-cast: rgba(255, 227, 239, 0.25);
+  --primary-bg: hsl(163, 80%, 60%);
+  --primary-bg-dark: hsl(163, 80%, 30%);
+  --primary-color: white;
+  --primary-color-dark: hsl(163, 80%, 45%);
+  background: white;
+  color: var(--grey-20);
 
 }
 
@@ -15,20 +21,39 @@ body {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-
 }
 
-.header{
+.container{
+  min-height: 100%;
+  display: grid;
+  grid-template-areas: "header"
+                       "nav"
+                       "main"
+                       "footer";
+  grid-template-columns: auto;
+  grid-template-rows: auto auto 1fr auto;
+}
+
+.footer{
+  grid-area: footer;
   padding: .2rem;
-}
-
-.header--primary{
-  text-align: center;
-  background: var(--primary-bg);
-  color: var(--primary-color);
 }
 
 .footer--primary{
   background: var(--primary-bg-dark);
   color: var(--primary-color-dark);
 }
+
+.main{
+  grid-area: main;
+  padding: 1rem;
+}
+
+.tile-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-auto-rows: minmax(200px, 1fr);
+  grid-gap: 1rem;
+}
+
+

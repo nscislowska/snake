@@ -1,0 +1,16 @@
+.header{
+    padding: .3rem 1rem;
+    grid-area: header;
+}
+
+.header--primary{
+    text-align: center;
+    background: var(--primary-bg);
+    color: var(--primary-color);
+}
+
+.header__title{
+    float: left;
+    font-weight: 100;
+    letter-spacing: .1em;
+}

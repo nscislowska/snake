@@ -1,37 +1,37 @@
-.navbar{
-    overflow: hidden;
+.nav{
     list-style: none;
-    position: sticky;
+    display: flex;
 }
 
-.navbar__bttn{
-    font-size: 1.2rem;
-    float: left;
-    padding: .2em 1em;
-    margin: .1rem .1rem;
+.nav-top{
+    grid-area: nav;
+    position: sticky;
+    top: 0;
 }
 
 .nav-top--primary{
     background: var(--primary-bg-dark);
 }
 
-.navbar__bttn--primary{
-    background: var(--primary-bg);
-    border: 2px solid var(--primary-bg-dark);
-    border-radius: 8px;
+.nav-top__bttn{
+    display: block;
+    font-size: 1.2rem;
+    padding: .2em 1em;
+    margin: .1rem .1rem;
 }
 
-.navbar__bttn--primary :hover{
-    background: var(--primary-bg-dark);
-    border-color: var(--primary-bg);
-}
-
-.navbar__bttn__text--primary {
+.nav-top__bttn--primary{
     text-decoration: none;
     color: var(--primary-color);
 }
 
-.js-navbar__bttn--sublist{
+.nav-top__bttn--primary :hover{
+    background-color: var(--white-cast);
+    cursor: pointer;
+}
+
+
+.js-nav-top__bttn--sublist{
 
 }
 

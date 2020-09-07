@@ -1,0 +1,30 @@
+.tile{
+    background-color: gray;
+    text-decoration: none;
+}
+
+.tile__title{
+    font-size: 1.2em;
+    margin: .2em 0;
+}
+
+.tile__info{
+    padding: .3em;
+    text-align: center;
+    color: white;
+    height: 100%;
+}
+
+.tile:hover .tile__info{
+    cursor: pointer;
+    background-image: linear-gradient(to top, var(--white-cast), transparent);
+}
+
+.tile__description{
+    display: none;
+    overflow-wrap: break-word;
+}
+
+.tile:hover .tile__description{
+    display: block;
+}
