@@ -23,6 +23,9 @@ html, body {
   box-sizing: border-box;
 }
 
+.hidden{
+  display: none;
+}
 .container{
   min-height: 100%;
   display: grid;
