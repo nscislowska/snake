@@ -1,45 +1,194 @@
 import Canvas from "./Canvas.js"
 import Snake from "./Snake.js"
 import Food from "./Food.js"
-const LEFT_KEY = "ArrowLeft";
-const RIGHT_KEY = "ArrowRight";
-const UP_KEY = "ArrowUp";
-const DOWN_KEY = "ArrowDown";
+import Score from "./Scorre.js"
+import GameObject from "./GameObject.js";
+import {DIRECTION, partSize} from "./Globals.js"
+import EventHandler from "./EventHandler.js";
 
-let partSize = 10;
-let speed = 100;
-let points = 0;
-let canvas = new Canvas();
-let snake = new Snake(
-    {x: 0, y: canvas.height/2},
-    5,
+let clientId, clientStyle;
+let speed = 120;
+let isTimeEnd = false;
+let gameStart;
+let canvas;
+let score;
+let interactiveObjects;
+let snake;
+let eventHandler;
+
+let bttn = document.getElementsByClassName("play-bttn")[0];
+let menu = document.getElementsByClassName("menu")[0];
+
+bttn.addEventListener("click", ()=>{
+    let ok = [false,false];
+    let errorMssgId = document.getElementsByClassName("error-mssg-id")[0];
+    let errorMssgStyle = document.getElementsByClassName("error-mssg-style")[0];
+    let clientIdInput = document.getElementsByClassName("user-id-input")[0];
+    let clientStyleInput = document.getElementsByClassName("user-style-input")[0];
+    clientId = clientIdInput.value;
+    clientStyle = clientStyleInput.value;
+    console.log("player's name: "+clientId);
+    console.log("player's style: "+clientStyle);
+    if (clientIdValidation(clientId, errorMssgId)){
+        errorMssgId.style.display = "none";
+        clientIdInput.classList.remove("input-error");
+        ok[0] = true;
+    }else{
+        errorMssgId.style.display = "block";
+        clientIdInput.classList.add("input-error");
+    }
+
+    if (clientIdValidation(clientStyle, errorMssgStyle)){
+        errorMssgStyle.style.display = "none";
+        clientStyleInput.classList.remove("input-error");
+        ok[1] = true;
+    }else{
+        errorMssgStyle.style.display = "block";
+        clientStyleInput.classList.add("input-error");
+    }
+    console.log(ok);
+    if(ok[0] && ok[1]){
+        menu.style.display = "none";
+        game();
+    }
+
+
+})
+
+function clientIdValidation(clientId, errorMssg){
+    let whitespace = new RegExp("\\s");
+    let text ="";
+    if(clientId.length > 0){
+        if(!whitespace.test(clientId)){
+            if(isIdFree(clientId)){
+                return true;
+            }else{
+                text = "przekroczony limit rozgrywek dla tej nazwy"
+            }
+        } else{
+            text = "Nazwa nie może zawierać spacji";
+        }
+    } else{
+        text = "Należy uzupełnić";
+    }
+    errorMssg.innerText = text;
+    return false;
+
+}
+
+
+function game(){
+    setup();
+    console.log("game start");
+    startClock();
+    main();
+}
+
+function startClock(){
+    isTimeEnd = false;
+    let gameMaxTime = 3*60;
+    let timeLeft = gameMaxTime;
+    let clockContent = document.getElementsByClassName("counter__content")[0];
+    let clock = setInterval(()=> {
+        let min = Math.floor(timeLeft/60);
+        let sec = timeLeft%60;
+        if(sec < 10){
+            sec = `0${sec}`;
+        }
+        clockContent.textContent = `${min}:${sec}`;
+        timeLeft -= 1;
+        if(timeLeft < 0 || snake.isDead()){
+            clearInterval(clock);
+            isTimeEnd = true;
+        }
+    }, 1000);
+
+
+}
+
+function setup(){
+    initOnce();
+
+    for(let object of interactiveObjects){
+        object.changeCoordToRandom(canvas.getHeight(),canvas.getWidth(), partSize);
+    }
+
+    score.set(0);
+     snake = new Snake(
+    {x: 0,
+        y: Math.floor((Math.random() * ((canvas.getHeight()/partSize)-4)) + 2)*partSize},
+        4,
     partSize);
+    if(eventHandler === undefined){
+        eventHandler = new EventHandler(canvas, snake, interactiveObjects);
+    }
+    gameStart = Date.now();
 
-const foodEvent = new Event("food");
-document.addEventListener("food", function(){snake.elongateBy(1)});
-document.addEventListener("keydown", changeDirection);
+    eventHandler.init(gameStart);
+}
 
-let interactiveObjects = [new Food(50,50,10),new Food(100,50,10),new Food(200,200,10)];
-
-main();
+function initOnce(){
+    if (canvas === undefined ){
+        canvas = new Canvas();
+    }
+    if(score === undefined){
+        score = new Score();
+    }
+    if(interactiveObjects === undefined){
+        interactiveObjects = new Array(GameObject);
+        interactiveObjects = [new Food(50,50,partSize),new Food(100,50,partSize),new Food(200,200,partSize)];
+    }
+}
 
 function main() {
+    let newEventTimeout;
+    document.addEventListener('keydown', changeDirection);
     setTimeout(
         function onTick() {
             canvas.clear();
             drawInteractiveObjects();
             drawSnake();
-            snake.move(canvas.width, canvas.height);
+            snake.move(canvas.getWidth(), canvas.getHeight());
+            snake.checkCollisionWithTail();
             checkCollision();
-            if(snake.isDead()) return;
+
+            if (!eventHandler.isTriggered() && eventHandler.makeEventFlag) {
+                eventHandler.makeEventFlag = false;
+                let seconds = Math.floor((Math.random() * 16-4) + 4);
+                 newEventTimeout = setTimeout(()=> {
+                    if(!isGameOver()) eventHandler.trigger();
+                    eventHandler.makeEventFlag = true;
+                    },seconds*1000);
+            }
+
+            if(isGameOver()){
+                gameOver(newEventTimeout);
+                return;
+            }
             main();
         },speed)
 }
+
+function gameOver(newEventTimeout){
+    clearTimeout(newEventTimeout);
+    if(eventHandler.isTriggered()){
+        eventHandler.finish();
+    }
+    sendData();
+    menu.style.display = "flex";
+    console.log('game over');
+}
+
+function isGameOver(){
+    return isTimeEnd || snake.isDead();
+}
+
 function drawInteractiveObjects(){
     for(let object of interactiveObjects){
         canvas.draw(object);
     }
 }
+
 function drawSnake() {
     for(let part of snake.parts){
         canvas.draw(part)
@@ -50,38 +199,124 @@ function checkCollision() {
     let head = snake.parts[0];
     for(let object of interactiveObjects){
         if(head.isSamePosition(object)){
-            if(object.className = "Food"){
-                document.dispatchEvent(foodEvent);
-                interactiveObjects.splice(
-                    interactiveObjects.findIndex(value => object === value),
-                    1
-                )
+            if(object.name === "food"){
+                console.log('food');
+                snake.elongateBy(1);
+                score.incrementBy(1);
+                object.changeCoordToRandom(canvas.getHeight(), canvas.getWidth(),  partSize);
+            }
+            if(object.name === "obstacle"){
+                eventHandler.eventSuccess();
             }
         }
     }
 }
 
-function changeDirection(event) {
-    const keyPressed = event.key;
-    const goingUp = snake.direction.y === -partSize;
-    const goingDown = snake.direction.y === partSize;
-    const goingRight = snake.direction.x === partSize;
-    const goingLeft = snake.direction.x === -partSize;
 
-    if (keyPressed === LEFT_KEY && !goingRight) {
-        snake.direction.x = -10;
-        snake.direction.y = 0;
-    }
-    if (keyPressed === RIGHT_KEY && !goingLeft) {
-        snake.direction.x = 10;
-        snake.direction.y = 0;
-    }
-    if (keyPressed === UP_KEY && !goingDown) {
-        snake.direction.x = 0;
-        snake.direction.y = -10;
-    }
-    if (keyPressed === DOWN_KEY && !goingUp) {
-        snake.direction.x = 0;
-        snake.direction.y = 10;
-    }
+function isIdFree(clientId){
+    let idOK;
+    POST("check_client_id", false, {id:clientId}, (data)=>{
+        console.log("name ok: ",data["ok"]);
+        idOK = data["ok"];
+    });
+    return idOK;
 }
+
+function sendData(){
+    let post_obj = {
+        mssg: "message from client",
+        events : eventHandler.eventsData,
+        client_id: clientId,
+        client_style : clientStyle
+    }
+    POST("game_finished",true, post_obj, ()=>{});
+};
+
+function GET(url, async, my_data, onSuccess){
+    $.ajax({
+		url: "/" + url,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		async: async,
+        data: JSON.stringify(my_data),
+		success: function(data){
+			onSuccess(data);
+		}
+	});
+}
+
+function POST(url, async, my_data, onSuccess) {
+    $.ajax({
+		url: "/" + url,
+		type: "POST",
+		contentType: "application/json",
+		dataType: "json",
+		async: async,
+		data: JSON.stringify(my_data),
+		success: (data)=>{
+		    onSuccess(data);
+		}
+	});
+}
+
+function changeDirection(event){
+            let isChanged = false;
+            const keyPressed = event.key;
+            const goingUp = snake.direction.y === -partSize;
+            const goingDown = snake.direction.y === partSize;
+            const goingRight = snake.direction.x === partSize;
+            const goingLeft = snake.direction.x === -partSize;
+
+            if (keyPressed === DIRECTION.LEFT.key && !goingRight) {
+                snake.direction.x = -partSize;
+                snake.direction.y = 0;
+                if(snake.turnCount.direction === DIRECTION.LEFT){
+                    snake.turnCountTemp +=1;
+
+                }
+                isChanged = true;
+
+            }
+            if (keyPressed === DIRECTION.RIGHT.key && !goingLeft) {
+                snake.direction.x = partSize;
+                snake.direction.y = 0;
+                if(snake.turnCount.direction === DIRECTION.RIGHT){
+                    snake.turnCountTemp +=1;
+                }
+                isChanged = true;
+            }
+            if (keyPressed === DIRECTION.UP.key && !goingDown) {
+                snake.direction.x = 0;
+                snake.direction.y = -partSize;
+                if(snake.turnCount.direction === DIRECTION.UP){
+                    snake.turnCountTemp +=1;
+                }
+                isChanged = true;
+            }
+            if (keyPressed === DIRECTION.DOWN.key && !goingUp) {
+                snake.direction.x = 0;
+                snake.direction.y = partSize;
+                if(snake.turnCount.direction === DIRECTION.DOWN){
+                    snake.turnCountTemp +=1;
+                }
+                isChanged = true;
+            }
+
+            if(isChanged && eventHandler.code === eventHandler.eventCodes.obstacle){
+                if(eventHandler.event.getTurnTimestamp() === undefined){
+                    eventHandler.event.setTurnTimestamp(Date.now() - gameStart);
+                }
+            }
+
+            if(snake.turnCount.count > 0) {
+                if (snake.turnCountTemp === snake.turnCount.count) {
+                    document.dispatchEvent(snake.turningEventSuccess);
+                }
+            }
+
+            if(isChanged === true){
+                document.removeEventListener('keydown', changeDirection);
+            }
+
+    }

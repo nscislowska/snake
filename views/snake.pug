@@ -1,0 +1,22 @@
+extends layout
+block scripts
+    link(rel='stylesheet', href='/stylesheets/snake.css')
+
+block content
+    canvas(id="gameCanvas" width=500 height=500)
+    script(src="/javascripts/snake/game.js" type="module")
+
+    div(class="hidden")
+        div(class="tile-grid")
+            a(class="tile" href="#")
+                div(class="tile__info")
+                    h4(class="tile__title")="tile 1"
+                    p(class="tile__description")="some description"
+            a(class="tile")
+                div(class="tile__info")
+                    h4(class="tile__title")="tile 2"
+                    p(class="tile__description")="dertgdhuji lxhkgbjrlzxurglzu igkudrg,drkugrdkdrgu.rd"
+            div(class="tile")
+                h4="tile 3"
+            div(class="tile")
+                h4="tile 4"
