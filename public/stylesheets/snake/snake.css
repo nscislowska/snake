@@ -1,11 +1,5 @@
-html, body{
-	height: 100%;
-	padding: 0px;
-	margin: 0px;
-	overflow: hidden;
-}
-body {
-	background-color: var(--green-20);
+.top-panel, .game-container {
+
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 1rem;
 	--basic-size: 10px;
@@ -13,17 +7,23 @@ body {
 	--green-40: hsl(120, 80%, 40%);
 	--green-30: hsl(120, 80%, 35%);
 	--green-20: hsl(120, 80%, 20%);
-	--gray-90: hsl(0, 0%, 90%);
-	--gray-50: hsl(0, 0%, 50%);
+	--gray-90: hsl(180, 5%, 90%);
+	--gray-60: hsl(180, 5%, 60%);
+	--gray-50: hsl(180, 5%, 50%);
+	--gray-40: hsl(180, 5%, 40%);
 }
 
-.container{
+.game-holder{
+	min-width:400px;
 	width: 100%;
-	margin: auto;
-	height:100%;
+	height: 100%;
+}
+
+.hidden{
+	display: none !important;
 }
 .game__image{
-	display: none !important;
+
 }
 .top-panel{
 	height: 3rem;
@@ -61,13 +61,14 @@ body {
 .game-container{
 	position: relative;
 	height: calc(100% - 3rem - 5px);
+	display: flex;
+	flex-direction: column;
 
 }
 
 .game__canvas {
 	min-width:400px;
 	min-height: 450px;
-	width: 100%;
 	height: 100%;
 	background: hsl(43,45%,31%);
 }
@@ -85,36 +86,6 @@ body {
 
 .error-mssg{
 	color: red;
-}
-.menu{
-	position: absolute;
-	top: 35%;
-	left: 35%;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-}
-.play-bttn{
-	font-size: calc(1rem + 1vw);
-	padding: .7em 3em;
-	margin-top: .3em;
-}
-
-.play-bttn--primary{
-	text-transform: uppercase;
-	font-weight: bold;
-	letter-spacing: 0.1em;
-	color: var(--gray-90);
-	background-color: var(--green-30);
-	border-top: 0;
-	border-left: 0;
-	border-right: .15em solid hsl(120,40%,35%);
-	border-bottom: .15em solid hsl(120,40%,35%);
-}
-
-.play-bttn:hover{
-	background-color: var(--green-40);
-	cursor: pointer;
 }
 
 .red, .red:before, .red:after{

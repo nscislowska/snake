@@ -4,15 +4,21 @@ html, body {
   width: 100%;
 }
 
+a{
+  text-decoration: none;
+  color: inherit;
+}
+
 :root {
-  --grey-50: hsl(0, 0%, 50%);
-  --grey-20: hsl(0, 0%, 20%);
+  --grey-50: hsl(180, 5%, 50%);
+  --grey-40: hsl(180, 5%, 40%);
+  --grey-20: hsl(180, 5%, 20%);
   --white-cast: rgba(255, 227, 239, 0.25);
   --primary-bg: hsl(163, 80%, 60%);
   --primary-bg-dark: hsl(163, 80%, 30%);
-  --primary-color: white;
+  --primary-color: hsl(180, 5%, 95%);
   --primary-color-dark: hsl(163, 80%, 45%);
-  background: white;
+  background: var(--grey-50);
   color: var(--grey-20);
 
 }
@@ -24,9 +30,10 @@ html, body {
 }
 
 .hidden{
-  display: none;
+  display: none ! important;
 }
-.container{
+
+.page-grid{
   min-height: 100%;
   display: grid;
   grid-template-areas: "header"
@@ -34,7 +41,7 @@ html, body {
                        "main"
                        "footer";
   grid-template-columns: auto;
-  grid-template-rows: auto auto 1fr auto;
+  grid-template-rows: 3em 2em 1fr auto;
 }
 
 .footer{

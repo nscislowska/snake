@@ -20,61 +20,9 @@ let bttn = document.getElementsByClassName("play-bttn")[0];
 let menu = document.getElementsByClassName("menu")[0];
 
 bttn.addEventListener("click", ()=>{
-    let ok = [false,false];
-    let errorMssgId = document.getElementsByClassName("error-mssg-id")[0];
-    let errorMssgStyle = document.getElementsByClassName("error-mssg-style")[0];
-    let clientIdInput = document.getElementsByClassName("user-id-input")[0];
-    let clientStyleInput = document.getElementsByClassName("user-style-input")[0];
-    clientId = clientIdInput.value;
-    clientStyle = clientStyleInput.value;
-    console.log("player's name: "+clientId);
-    console.log("player's style: "+clientStyle);
-    if (clientIdValidation(clientId, errorMssgId)){
-        errorMssgId.style.display = "none";
-        clientIdInput.classList.remove("input-error");
-        ok[0] = true;
-    }else{
-        errorMssgId.style.display = "block";
-        clientIdInput.classList.add("input-error");
-    }
-
-    if (clientIdValidation(clientStyle, errorMssgStyle)){
-        errorMssgStyle.style.display = "none";
-        clientStyleInput.classList.remove("input-error");
-        ok[1] = true;
-    }else{
-        errorMssgStyle.style.display = "block";
-        clientStyleInput.classList.add("input-error");
-    }
-    console.log(ok);
-    if(ok[0] && ok[1]){
         menu.style.display = "none";
         game();
-    }
-
-
 })
-
-function clientIdValidation(clientId, errorMssg){
-    let whitespace = new RegExp("\\s");
-    let text ="";
-    if(clientId.length > 0){
-        if(!whitespace.test(clientId)){
-            if(isIdFree(clientId)){
-                return true;
-            }else{
-                text = "przekroczony limit rozgrywek dla tej nazwy"
-            }
-        } else{
-            text = "Nazwa nie może zawierać spacji";
-        }
-    } else{
-        text = "Należy uzupełnić";
-    }
-    errorMssg.innerText = text;
-    return false;
-
-}
 
 
 function game(){
@@ -174,7 +122,7 @@ function gameOver(newEventTimeout){
     if(eventHandler.isTriggered()){
         eventHandler.finish();
     }
-    sendData();
+    //sendData();
     menu.style.display = "flex";
     console.log('game over');
 }

@@ -20,10 +20,11 @@ export default class ChoosingEvent extends RandomEvent {
     }
 
     clearDisplay(description, index){
-        this.choosingObjects[index].classList.remove(description.color, description.shape);
-        this.choosingObjects[index].innerText = "";
-        this.choosingObjects[index].style.top = '';
-        this.choosingObjects[index].style.left = '';
+        // this.choosingObjects[index].classList.remove(description.color, description.shape);
+        // this.choosingObjects[index].innerText = "";
+        // this.choosingObjects[index].style.top = '';
+        // this.choosingObjects[index].style.left = '';
+        this.choosingObjects[index].classList.add('hidden');
     }
 
     setDisplay(description, index, text){
@@ -31,6 +32,7 @@ export default class ChoosingEvent extends RandomEvent {
         this.choosingObjects[index].innerText = text;
         this.choosingObjects[index].style.top = `${description.y}px`;
         this.choosingObjects[index].style.left = `${description.x}px`;
+        this.choosingObjects[index].classList.remove('hidden');
     }
 
 

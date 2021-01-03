@@ -1,20 +1,16 @@
 extends layout
 
 block content
-  canvas(id="gameCanvas" width=500 height=500)
-  script(src="/javascripts/snake/game.js" type="module")
-
-  div(class="hidden")
-    div(class="tile-grid")
-      a(class="tile" href="#")
-        div(class="tile__info")
-          h4(class="tile__title")="tile 1"
-          p(class="tile__description")="some description"
-      a(class="tile")
-        div(class="tile__info")
-          h4(class="tile__title")="tile 2"
-          p(class="tile__description")="dertgdhuji lxhkgbjrlzxurglzu igkudrg,drkugrdkdrgu.rd"
-      div(class="tile")
-        h4="tile 3"
-      div(class="tile")
-        h4="tile 4"
+  div(class="tile-grid")
+    a(class="tile" href="/games/snake")
+      div(class="tile__info")
+        h4(class="tile__title")="snake"
+        p(class="tile__description")="classic snake"
+    a(class="tile")
+      div(class="tile__info")
+        h4(class="tile__title")="tile 2"
+        p(class="tile__description")="dertgdhuji lxhkgbjrlzxurglzu igkudrg,drkugrdkdrgu.rd"
+    div(class="tile")
+      h4="tile 3"
+    div(class="tile")
+      h4="tile 4"
