@@ -28,8 +28,10 @@ html
                 GazeCloudAPI.OnError = function (msg) {
                     console.log("err: "+msg )
                 }
+                GazeCloudAPI.UseClickRecalibration = true;
                 GazeCloudAPI.StartEyeTracking();
             };
             function end(){
                 GazeCloudAPI.StopEyeTracking();
+
             };

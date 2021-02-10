@@ -7,6 +7,11 @@ router.get('/escape', function(req, res, next) {
 
 });
 
+router.get('/bandit', function(req, res, next) {
+    res.render('games/bandit', { title: 'Jednoręki bandyta' });
+
+});
+
 router.get('/snake', function(req, res, next) {
     res.render('games/snake', { title: 'Snake' });
 
