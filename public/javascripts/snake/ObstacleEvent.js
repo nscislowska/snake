@@ -8,10 +8,6 @@ export default class ObstacleEvent extends RandomEvent {
         this.finalTimeout = 3000;
         this.prizes = [5];
         this.isSuccess = true;
-        this.eventSpecificData = {
-            obstacleCoord : undefined,
-            timestampOfTurn : undefined
-        };
     }
 
     trigger() {
@@ -20,10 +16,6 @@ export default class ObstacleEvent extends RandomEvent {
         let x = this.snake.getHead().x + this.snake.direction.x * offset;
         let y = this.snake.getHead().y + this.snake.direction.y * offset;
         this.eventObject = new Obstacle(x, y, partSize);
-        this.eventSpecificData.obstacleCoord = {
-            x: x,
-            y: y
-        };
         this.interactiveObjects.push(this.eventObject);
     }
 
@@ -38,14 +30,6 @@ export default class ObstacleEvent extends RandomEvent {
         this.prize = this.prizes[0];
         this.snake.elongateBy(this.prize);
         this.isSuccess = false;
-    }
-
-    getTurnTimestamp(){
-        return this.eventSpecificData.timestampOfTurn;
-    }
-
-    setTurnTimestamp(timestamp){
-        this.eventSpecificData.timestampOfTurn = timestamp;
     }
 
 

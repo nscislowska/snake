@@ -11,19 +11,10 @@ export default class ChoosingEvent extends RandomEvent {
         this.shapes = ['circle'];
         this.colors = ['red', "yellow", "blue", "purple", "pink", "green", "orange", "white"];
         this.currentObjects = [];
-        this.eventSpecificData = {
-            goalObject : undefined,
-            allObjects: undefined,
-            chosenIndex: undefined
-        };
 
     }
 
     clearDisplay(description, index){
-        // this.choosingObjects[index].classList.remove(description.color, description.shape);
-        // this.choosingObjects[index].innerText = "";
-        // this.choosingObjects[index].style.top = '';
-        // this.choosingObjects[index].style.left = '';
         this.choosingObjects[index].classList.add('hidden');
     }
 
@@ -65,9 +56,9 @@ export default class ChoosingEvent extends RandomEvent {
 
         this.setDisplay(this.currentObjects[0], 0, "");
 
-        this.timers.push(setTimeout(()=>{
+        this.clock.func = ()=>{
             this.clearDisplay(this.currentObjects[0],0);
-            this.timers.push(setTimeout(()=>{
+            this.clock.func =()=>{
 
                 let coordX = [];
                 let coordY = [];
@@ -88,13 +79,13 @@ export default class ChoosingEvent extends RandomEvent {
                     this.setDisplay(this.currentObjects[i],i,`${this.currentObjects[i].index}`)
                 }
 
-            }, 1000));
-        }, 500));
+            };
+            this.clock.start(1000);
+        };
+        this.clock.start(500);
     }
 
     finish() {
-        this.eventSpecificData.goalObject= this.currentObjects[0];
-        this.eventSpecificData.allObjects = this.currentObjects.length;
         for (let i=0; i< this.currentObjects.length; i++){
             this.clearDisplay(this.currentObjects[i], i);
         }

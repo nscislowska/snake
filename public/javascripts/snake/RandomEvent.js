@@ -1,18 +1,25 @@
-import Obstacle from "./Obstacle.js";
-import Message from "./Message.js";
-import {DIRECTION, partSize, ALPHABET} from "./Globals.js";
+import {partSize} from "./Globals.js";
+import Timer from "./Timer.js";
 
 export default class RandomEvent {
     constructor(snake, canvas, interactiveObjects){
-        this.finalTimeout = 5000;
+        this.finalTimeout = 0;
         this.prize = 0;
         this.prizes=[0];
-        this.timers = [];
         this.snake = snake;
         this.canvas = canvas;
         this.interactiveObjects = interactiveObjects;
         this.eventFinished = new Event('eventFinished');
         this.isSuccess = false;
+        this.clock = new Timer();
+    }
+
+    pause(){
+        this.clock.pause();
+    }
+
+    resume(){
+        this.clock.resume();
     }
 
     getPrize(){
@@ -64,11 +71,7 @@ export default class RandomEvent {
 
     trigger(){}
     finish(){
-        this.prize=0;
-        for (let timer of this.timers){
-            clearTimeout(timer);
-        }
-        this.timers=[];
+        this.clock.clear();
     }
 
 }

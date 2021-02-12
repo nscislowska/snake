@@ -7,7 +7,7 @@ import {DIRECTION, partSize} from "./Globals.js"
 import EventHandler from "./EventHandler.js";
 
 let clientId, clientStyle;
-let speed = 120;
+let speed = 130;
 let isTimeEnd = false;
 let gameStart;
 let canvas;
@@ -15,15 +15,16 @@ let score;
 let interactiveObjects;
 let snake;
 let eventHandler;
+let timePassed;
+let isPaused = false;
 
-let bttn = document.getElementsByClassName("play-bttn")[0];
+let startBttn = document.getElementsByClassName("play-bttn")[0];
 let menu = document.getElementsByClassName("menu")[0];
 
-bttn.addEventListener("click", ()=>{
+startBttn.addEventListener("click", ()=>{
         menu.style.display = "none";
         game();
-})
-
+});
 
 function game(){
     setup();
@@ -33,30 +34,23 @@ function game(){
 }
 
 function startClock(){
-    isTimeEnd = false;
-    let gameMaxTime = 3*60;
-    let timeLeft = gameMaxTime;
     let clockContent = document.getElementsByClassName("counter__content")[0];
     let clock = setInterval(()=> {
-        let min = Math.floor(timeLeft/60);
-        let sec = timeLeft%60;
+        let min = Math.floor(timePassed/60);
+        let sec = timePassed%60;
         if(sec < 10){
             sec = `0${sec}`;
         }
         clockContent.textContent = `${min}:${sec}`;
-        timeLeft -= 1;
-        if(timeLeft < 0 || snake.isDead()){
+        timePassed += 1;
+        if(snake.isDead() || isPaused){
             clearInterval(clock);
-            isTimeEnd = true;
         }
     }, 1000);
-
-
 }
 
 function setup(){
     initOnce();
-
     for(let object of interactiveObjects){
         object.changeCoordToRandom(canvas.getHeight(),canvas.getWidth(), partSize);
     }
@@ -76,6 +70,7 @@ function setup(){
 }
 
 function initOnce(){
+    timePassed = 0;
     if (canvas === undefined ){
         canvas = new Canvas();
     }
@@ -89,9 +84,9 @@ function initOnce(){
 }
 
 function main() {
+    document.addEventListener('keydown', keyboardEvents);
     let newEventTimeout;
-    document.addEventListener('keydown', changeDirection);
-    setTimeout(
+    let gameClock = setTimeout(
         function onTick() {
             canvas.clear();
             drawInteractiveObjects();
@@ -108,27 +103,30 @@ function main() {
                     eventHandler.makeEventFlag = true;
                     },seconds*1000);
             }
-
-            if(isGameOver()){
-                gameOver(newEventTimeout);
-                return;
+            if(isGameOver() || isPaused){
+                clearTimeout(gameClock);
+                clearTimeout(newEventTimeout);
+                if(isGameOver()) {
+                    gameOver();
+                }
             }
-            main();
+            else {
+                main();
+            }
         },speed)
 }
 
-function gameOver(newEventTimeout){
-    clearTimeout(newEventTimeout);
+function gameOver(){
+    document.removeEventListener('keydown', keyboardEvents);
     if(eventHandler.isTriggered()){
         eventHandler.finish();
     }
-    //sendData();
     menu.style.display = "flex";
     console.log('game over');
 }
 
 function isGameOver(){
-    return isTimeEnd || snake.isDead();
+    return snake.isDead();
 }
 
 function drawInteractiveObjects(){
@@ -160,57 +158,28 @@ function checkCollision() {
     }
 }
 
+function keyboardEvents(event){
+    const keyPressed = event.key;
 
-function isIdFree(clientId){
-    let idOK;
-    POST("check_client_id", false, {id:clientId}, (data)=>{
-        console.log("name ok: ",data["ok"]);
-        idOK = data["ok"];
-    });
-    return idOK;
-}
-
-function sendData(){
-    let post_obj = {
-        mssg: "message from client",
-        events : eventHandler.eventsData,
-        client_id: clientId,
-        client_style : clientStyle
+    if(keyPressed === 'p'){
+        isPaused = !isPaused;
+        if(!isPaused){
+            startClock();
+            eventHandler.resume();
+            main();
+        }else{
+            eventHandler.pause();
+        }
+        console.log("paused: ", isPaused);
     }
-    POST("game_finished",true, post_obj, ()=>{});
-};
+    else{
+        changeDirection(keyPressed);
+    }
 
-function GET(url, async, my_data, onSuccess){
-    $.ajax({
-		url: "/" + url,
-		type: "GET",
-		contentType: "application/json",
-		dataType: "json",
-		async: async,
-        data: JSON.stringify(my_data),
-		success: function(data){
-			onSuccess(data);
-		}
-	});
 }
 
-function POST(url, async, my_data, onSuccess) {
-    $.ajax({
-		url: "/" + url,
-		type: "POST",
-		contentType: "application/json",
-		dataType: "json",
-		async: async,
-		data: JSON.stringify(my_data),
-		success: (data)=>{
-		    onSuccess(data);
-		}
-	});
-}
-
-function changeDirection(event){
+function changeDirection(keyPressed){
             let isChanged = false;
-            const keyPressed = event.key;
             const goingUp = snake.direction.y === -partSize;
             const goingDown = snake.direction.y === partSize;
             const goingRight = snake.direction.x === partSize;
@@ -249,12 +218,6 @@ function changeDirection(event){
                     snake.turnCountTemp +=1;
                 }
                 isChanged = true;
-            }
-
-            if(isChanged && eventHandler.code === eventHandler.eventCodes.obstacle){
-                if(eventHandler.event.getTurnTimestamp() === undefined){
-                    eventHandler.event.setTurnTimestamp(Date.now() - gameStart);
-                }
             }
 
             if(snake.turnCount.count > 0) {

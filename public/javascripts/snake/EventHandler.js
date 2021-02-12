@@ -2,7 +2,7 @@ import ObstacleEvent from "./ObstacleEvent.js";
 import LetterEvent from "./LetterEvent.js";
 import TurningEvent from "./TurningEvent.js";
 import ChoosingEvent from "./ChoosingEvent.js";
-import {ALPHABET} from "./Globals.js";
+import Timer from "./Timer.js";
 
 export default class EventHandler {
     constructor(canvas,snake, interactiveObjects) {
@@ -10,8 +10,8 @@ export default class EventHandler {
         this.triggered = false;
         this.canvas = canvas;
         this.event = undefined;
-        this.timeout = null;
         this.makeEventFlag = true;
+        this.clock = new Timer();
         this.snake = snake;
         this.interactiveObjects = interactiveObjects;
         document.addEventListener('eventFinished', ()=>{
@@ -24,15 +24,6 @@ export default class EventHandler {
             "turning" : 3,
             "choosing" : 4
         }
-
-        this.eventData={
-            code: 0,
-            start:0,
-            end:0,
-            success:false,
-            snakeCoord: undefined,
-            eventSpecific : undefined
-        };
 
     }
     init(gameStart){
@@ -52,6 +43,20 @@ export default class EventHandler {
 
     isTriggered(){
         return this.triggered;
+    }
+
+    pause(){
+        if(this.event){
+            this.event.pause();
+        }
+        this.clock.pause();
+    }
+
+    resume(){
+        if(this.event){
+            this.event.resume();
+        }
+        this.clock.resume();
     }
 
     trigger(){
@@ -77,8 +82,6 @@ export default class EventHandler {
             console.log(this.probableCodes);
         }
 
-        //this.code = this.eventCodes.letter;
-
         switch(this.code){
             case(this.eventCodes.obstacle):
                 this.event = new ObstacleEvent(this.snake,this.canvas, this.interactiveObjects);
@@ -103,19 +106,18 @@ export default class EventHandler {
         this.event.trigger();
 
         if(this.isTriggered()){
-            this.timeout = setTimeout(() => {
+            this.clock.func = ()=> {
                     this.finish();
-                }, this.event.finalTimeout);
+                };
+            this.clock.start(this.event.finalTimeout);
         }
-        this.saveEventOnStart();
     }
 
     finish(){
-        this.saveEventOnFinish();
         console.log(this.eventsData[this.eventsData.length-1]);
         console.log('finish event: ', Object.keys(this.eventCodes)[this.code-1]);
         this.removeListeners();
-        clearTimeout(this.timeout);
+        this.clock.clear();
         if (this.event !== undefined){
             console.log("prize: "+this.event.getPrize());
             this.event.finish();
@@ -124,23 +126,6 @@ export default class EventHandler {
         this.code=0;
         this.event=undefined;
 
-    }
-
-    saveEventOnStart(){
-        this.eventData.start = this.saveTime();
-        this.eventData.code = this.code;
-        this.eventData.snakeCoord = {
-            x: this.snake.getHead().x,
-            y: this.snake.getHead().y
-        };
-    }
-
-    saveEventOnFinish(){
-        this.eventData.end = this.saveTime();
-        this.eventData.success = this.event.isSuccess;
-        this.eventData.eventSpecific = this.event.eventSpecificData;
-        this.eventsData.push(this.eventData);
-        this.eventData={};
     }
 
     removeListeners(){

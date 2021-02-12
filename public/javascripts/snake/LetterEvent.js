@@ -7,14 +7,9 @@ export default class LetterEvent extends RandomEvent{
         this.finalTimeout = 7900;
         this.letterElement = document.getElementsByClassName("letter")[0];
         this.timers = [];
-        this.clock = {};
         this.elapsedSeconds = 0;
         this.prize = 0;
         this.prizes = [3, 1];
-        this.eventSpecificData = {
-            letter : undefined,
-            letterCoord: undefined
-        };
     }
 
     setLetter(letter){
@@ -26,7 +21,7 @@ export default class LetterEvent extends RandomEvent{
     }
 
     success(){
-        clearInterval(this.clock);
+        this.elapsedSeconds = (this.start - Date.now())/1000;
         if(this.elapsedSeconds < 3){
             this.prize = this.prizes[0];
         } else {
@@ -48,25 +43,24 @@ export default class LetterEvent extends RandomEvent{
         if(isSquare){
             this.finalTimeout += 300;
             this.displaySquare();
-            this.timers.push(setTimeout(()=>{
-            this.hideSquare();
+            this.clock.func = ()=>{
+                this.hideSquare();
                 this.displayLetterDrill(coord);
-            }, 300));
+            };
+            this.clock.start(300);
+
         } else{
             this.displayLetterDrill(coord);
         }
 
     }
 
-    displayLetterDrill(letterCoord){
-        this.timers.push(setTimeout(()=>{
+    displayLetterDrill(){
+        this.clock.func = ()=>{
                 this.displayLetter();
-                this.eventSpecificData.letterCoord = letterCoord;
-                this.eventSpecificData.letter = this.getLetter();
-                this.clock = setInterval(()=>{
-                    this.elapsedSeconds +=1;
-                },1000);
-            }, 3000));
+                this.start = Date.now();
+        };
+        this.clock.start(3000);
     }
 
     finish(){
@@ -97,8 +91,9 @@ export default class LetterEvent extends RandomEvent{
         let letter = ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
         this.setLetter(letter);
         this.letterElement.style.opacity = "0.2";
-        this.timers.push(setTimeout(()=>{
+        this.clock.func = ()=>{
             this.letterElement.style.opacity ="1";
-        }, 4000));
+        };
+        this.clock.start(4000);
     }
 }
