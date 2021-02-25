@@ -11,7 +11,7 @@ export default class EventHandler {
         this.canvas = canvas;
         this.event = undefined;
         this.makeEventFlag = true;
-        this.clock = new Timer();
+        this.clock = new Timer(Timer.TIMEOUT);
         this.snake = snake;
         this.interactiveObjects = interactiveObjects;
         document.addEventListener('eventFinished', ()=>{
@@ -31,8 +31,6 @@ export default class EventHandler {
             ...Object.values(this.eventCodes),
             ...Object.values(this.eventCodes),
             ...Object.values(this.eventCodes)];
-        this.eventsData=[];
-        this.gameStart=gameStart;
 
     }
 
@@ -82,6 +80,8 @@ export default class EventHandler {
             console.log(this.probableCodes);
         }
 
+        //this.code = this.eventCodes.choosing;//testing: choose triggered event
+
         switch(this.code){
             case(this.eventCodes.obstacle):
                 this.event = new ObstacleEvent(this.snake,this.canvas, this.interactiveObjects);
@@ -106,15 +106,13 @@ export default class EventHandler {
         this.event.trigger();
 
         if(this.isTriggered()){
-            this.clock.func = ()=> {
-                    this.finish();
-                };
-            this.clock.start(this.event.finalTimeout);
+            this.clock.start(()=> {
+                this.finish();
+            }, this.event.finalTimeout);
         }
     }
 
     finish(){
-        console.log(this.eventsData[this.eventsData.length-1]);
         console.log('finish event: ', Object.keys(this.eventCodes)[this.code-1]);
         this.removeListeners();
         this.clock.clear();
@@ -136,11 +134,6 @@ export default class EventHandler {
     }
 
 
-    saveTime(){
-        return Date.now() - this.gameStart;
-    }
-
-
 }
 
 let choosingEvent = {};
@@ -150,7 +143,6 @@ let letterEvent = {};
 function keydownHandler(event){
     let choice = parseInt(event.key);
     if(Number.isInteger(choice)){
-        choosingEvent.eventSpecificData.chosenIndex = choice;
        if ( choice === choosingEvent.currentObjects[0].index) {
             choosingEvent.success();
         }
@@ -181,7 +173,6 @@ function turningEventSuccessHandler(event){
 
 function letterKeypressHandler(event){
     let choice = event.key;
-
     if(choice === letterEvent.getLetter()){
         letterEvent.success();
         document.removeEventListener('keydown', letterKeypressHandler);

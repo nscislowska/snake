@@ -5,10 +5,9 @@ import Score from "./Scorre.js"
 import GameObject from "./GameObject.js";
 import {DIRECTION, partSize} from "./Globals.js"
 import EventHandler from "./EventHandler.js";
+import Timer from "./Timer.js";
 
-let clientId, clientStyle;
-let speed = 130;
-let isTimeEnd = false;
+let speed = 120;
 let gameStart;
 let canvas;
 let score;
@@ -26,6 +25,8 @@ startBttn.addEventListener("click", ()=>{
         game();
 });
 
+let gameClocks = [new Timer(Timer.INTERVAL), new Timer(Timer.TIMEOUT), new Timer(Timer.INTERVAL)];
+
 function game(){
     setup();
     console.log("game start");
@@ -35,18 +36,16 @@ function game(){
 
 function startClock(){
     let clockContent = document.getElementsByClassName("counter__content")[0];
-    let clock = setInterval(()=> {
-        let min = Math.floor(timePassed/60);
-        let sec = timePassed%60;
+    gameClocks[2].start(()=> {
+        let secondsPassed = timePassed/100;
+        let min = Math.floor(secondsPassed/60);
+        let sec = Math.floor(secondsPassed%60);
         if(sec < 10){
             sec = `0${sec}`;
         }
         clockContent.textContent = `${min}:${sec}`;
         timePassed += 1;
-        if(snake.isDead() || isPaused){
-            clearInterval(clock);
-        }
-    }, 1000);
+    }, 1);
 }
 
 function setup(){
@@ -83,10 +82,11 @@ function initOnce(){
     }
 }
 
+
+
 function main() {
     document.addEventListener('keydown', keyboardEvents);
-    let newEventTimeout;
-    let gameClock = setTimeout(
+    gameClocks[0].start(
         function onTick() {
             canvas.clear();
             drawInteractiveObjects();
@@ -97,26 +97,23 @@ function main() {
 
             if (!eventHandler.isTriggered() && eventHandler.makeEventFlag) {
                 eventHandler.makeEventFlag = false;
-                let seconds = Math.floor((Math.random() * 16-4) + 4);
-                 newEventTimeout = setTimeout(()=> {
+                let seconds = Math.floor((Math.random() * 20-4) + 4);
+                 gameClocks[1].start(()=> {
                     if(!isGameOver()) eventHandler.trigger();
                     eventHandler.makeEventFlag = true;
                     },seconds*1000);
             }
-            if(isGameOver() || isPaused){
-                clearTimeout(gameClock);
-                clearTimeout(newEventTimeout);
-                if(isGameOver()) {
-                    gameOver();
-                }
-            }
-            else {
-                main();
+
+            if(isGameOver()){
+                gameOver();
             }
         },speed)
 }
 
 function gameOver(){
+    for (let clock of gameClocks){
+        clock.clear();
+    }
     document.removeEventListener('keydown', keyboardEvents);
     if(eventHandler.isTriggered()){
         eventHandler.finish();
@@ -162,12 +159,19 @@ function keyboardEvents(event){
     const keyPressed = event.key;
 
     if(keyPressed === 'p'){
+        let pauseView = document.getElementsByClassName("pause-view")[0];
         isPaused = !isPaused;
         if(!isPaused){
-            startClock();
+            pauseView.classList.add("hidden");
             eventHandler.resume();
-            main();
+            for (let clock of gameClocks){
+                clock.resume();
+            }
         }else{
+            for (let clock of gameClocks){
+                clock.pause();
+            }
+            pauseView.classList.remove("hidden");
             eventHandler.pause();
         }
         console.log("paused: ", isPaused);

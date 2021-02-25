@@ -1,6 +1,7 @@
 import RandomEvent from "./RandomEvent.js";
 import {DIRECTION, partSize} from "./Globals.js";
 import Message from "./Message.js";
+import Timer from "./Timer.js";
 
 export default class TurningEvent extends RandomEvent {
     constructor(snake, canvas, interactiveObjects) {
@@ -10,8 +11,8 @@ export default class TurningEvent extends RandomEvent {
         this.finalTimeout = 17000;
         this.finished = false;
         this.secondsLeft = 0;
-        this.countdownClock = null;
         this.prizes = [5,3,1];
+        this.clocks=[new Timer(Timer.TIMEOUT), new Timer(Timer.INTERVAL)];
     }
 
     trigger() {
@@ -23,14 +24,13 @@ export default class TurningEvent extends RandomEvent {
         console.log(message);
         this.snake.setTurnCount(turns, direction);
         this.message.set(message);
-        this.clock.func = ()=> {
+        this.clocks[0].start( ()=> {
             this.secondsLeft = 15;
-            this.countdownClock=setInterval(()=>{
+            this.clocks[1].start(()=>{
                 this.message.set(`Pozostały czas: ${this.secondsLeft}s`);
                 this.secondsLeft-=1;
                 }, 1000);
-        };
-        this.clock.start(1000);
+        },1000);
 
     }
 
@@ -38,7 +38,6 @@ export default class TurningEvent extends RandomEvent {
         this.finished = true;
         this.snake.nullTurnCount();
         this.message.set("");
-        clearInterval(this.countdownClock);
         this.secondsLeft = 0;
         super.finish();
     }

@@ -3,6 +3,7 @@ extends game
 append head
     link(rel='stylesheet', href='/stylesheets/snake/snake.css')
     link(rel='stylesheet', href='/stylesheets/snake/menu.css')
+    link(rel='stylesheet', href='/stylesheets/snake/pause-view.css')
     script(src="/javascripts/snake/game.js" type="module")
 
 block game
@@ -16,10 +17,12 @@ block game
                 span(class="counter__content") 0:00
         div(class="game-container")
             canvas(class="game__canvas")
-            div(class="menu-container")
+            div(class="view-container")
                 div(class="menu")
                     button(class="menu__item menu__item--primary" disabled=true) Instrukcja
                     button(class="menu__item menu__item--primary play-bttn") Graj
+                div(class="pause-view pause-view--light hidden")
+                    div(class="pause-view__text") pause
 
             span(class="letter")
             span(class="choose-object hidden")

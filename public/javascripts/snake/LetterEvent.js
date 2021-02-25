@@ -1,15 +1,16 @@
 import RandomEvent from "./RandomEvent.js";
 import {ALPHABET, partSize} from "./Globals.js";
+import Timer from "./Timer.js";
 
 export default class LetterEvent extends RandomEvent{
     constructor(snake,canvas,interactiveObjects) {
         super(snake, canvas, interactiveObjects);
         this.finalTimeout = 7900;
         this.letterElement = document.getElementsByClassName("letter")[0];
-        this.timers = [];
         this.elapsedSeconds = 0;
         this.prize = 0;
         this.prizes = [3, 1];
+        this.clocks = [new Timer(Timer.TIMEOUT)];
     }
 
     setLetter(letter){
@@ -43,11 +44,10 @@ export default class LetterEvent extends RandomEvent{
         if(isSquare){
             this.finalTimeout += 300;
             this.displaySquare();
-            this.clock.func = ()=>{
+            this.clocks[0].start(()=>{
                 this.hideSquare();
                 this.displayLetterDrill(coord);
-            };
-            this.clock.start(300);
+            }, 300);
 
         } else{
             this.displayLetterDrill(coord);
@@ -56,11 +56,10 @@ export default class LetterEvent extends RandomEvent{
     }
 
     displayLetterDrill(){
-        this.clock.func = ()=>{
+        this.clocks[0].start(()=>{
                 this.displayLetter();
                 this.start = Date.now();
-        };
-        this.clock.start(3000);
+        }, 3000);
     }
 
     finish(){
@@ -91,9 +90,8 @@ export default class LetterEvent extends RandomEvent{
         let letter = ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
         this.setLetter(letter);
         this.letterElement.style.opacity = "0.2";
-        this.clock.func = ()=>{
+        this.clocks[0].start( ()=>{
             this.letterElement.style.opacity ="1";
-        };
-        this.clock.start(4000);
+        }, 4000);
     }
 }

@@ -1,6 +1,6 @@
 import RandomEvent from "./RandomEvent.js";
 import {partSize} from "./Globals.js";
-import Obstacle from "./Obstacle.js";
+import Timer from "./Timer.js";
 
 export default class ChoosingEvent extends RandomEvent {
     constructor(snake,canvas, interactiveObjects) {
@@ -11,6 +11,7 @@ export default class ChoosingEvent extends RandomEvent {
         this.shapes = ['circle'];
         this.colors = ['red', "yellow", "blue", "purple", "pink", "green", "orange", "white"];
         this.currentObjects = [];
+        this.clocks = [new Timer(Timer.TIMEOUT)];
 
     }
 
@@ -56,10 +57,9 @@ export default class ChoosingEvent extends RandomEvent {
 
         this.setDisplay(this.currentObjects[0], 0, "");
 
-        this.clock.func = ()=>{
+        this.clocks[0].start(()=>{
             this.clearDisplay(this.currentObjects[0],0);
-            this.clock.func =()=>{
-
+            this.clocks[0].start(()=>{
                 let coordX = [];
                 let coordY = [];
                 let margin = objectWidth+partSize*2;
@@ -79,10 +79,8 @@ export default class ChoosingEvent extends RandomEvent {
                     this.setDisplay(this.currentObjects[i],i,`${this.currentObjects[i].index}`)
                 }
 
-            };
-            this.clock.start(1000);
-        };
-        this.clock.start(500);
+            },1000);
+        },500);
     }
 
     finish() {
@@ -102,7 +100,5 @@ export default class ChoosingEvent extends RandomEvent {
         this.isSuccess = true;
 
     }
-
-
 
 }

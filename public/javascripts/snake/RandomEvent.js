@@ -11,15 +11,19 @@ export default class RandomEvent {
         this.interactiveObjects = interactiveObjects;
         this.eventFinished = new Event('eventFinished');
         this.isSuccess = false;
-        this.clock = new Timer();
+        this.clocks = [];
     }
 
     pause(){
-        this.clock.pause();
+        for (let clock of this.clocks){
+            clock.pause();
+        }
     }
 
     resume(){
-        this.clock.resume();
+        for (let clock of this.clocks) {
+            clock.resume();
+        }
     }
 
     getPrize(){
@@ -71,7 +75,9 @@ export default class RandomEvent {
 
     trigger(){}
     finish(){
-        this.clock.clear();
+        for (let clock of this.clocks) {
+            clock.clear();
+        }
     }
 
 }
