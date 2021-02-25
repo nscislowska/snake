@@ -1,0 +1,59 @@
+.instruction{
+    background: var(--primary-bg-dark);
+    color: var(--primary-color);
+    height:100%;
+    width:100%;
+    padding: 10px;
+    position: absolute;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr auto;
+    grid-template-areas: "controls events"
+                         "footer footer";
+    grid-column-gap: 5px;
+    top: 0;
+    line-height: 1.7em;
+}
+.instruction__bttn{
+    padding: 0.5em;
+    font-size: 1.2em;
+}
+
+
+.instruction__footer{
+    area: footer;
+    grid-column-end: span 2;
+    text-align: center;
+}
+.inline-img{
+    height: 1em;
+}
+.media-object{
+    display: block;
+    overflow: hidden;
+}
+.media-object__image{
+    width: 20%;
+    float: left;
+}
+
+.instruction__element + .instruction__element{
+    margin-top: 10px;
+}
+
+.instruction__highlight{
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.instruction__list{
+    padding: 0 2em;
+}
+
+.instruction__controls{
+    grid-area: controls;
+}
+
+.instruction__events{
+    grid-area: events;
+}

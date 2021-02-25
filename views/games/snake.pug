@@ -3,6 +3,7 @@ extends game
 append head
     link(rel='stylesheet', href='/stylesheets/snake/snake.css')
     link(rel='stylesheet', href='/stylesheets/snake/menu.css')
+    link(rel='stylesheet', href='/stylesheets/snake/instruction.css')
     link(rel='stylesheet', href='/stylesheets/snake/pause-view.css')
     script(src="/javascripts/snake/game.js" type="module")
 
@@ -19,10 +20,53 @@ block game
             canvas(class="game__canvas")
             div(class="view-container")
                 div(class="menu")
-                    button(class="menu__item menu__item--primary" disabled=true) Instrukcja
+                    button(id="menu__go-to-instruction" class="menu__item menu__item--primary") Instrukcja
                     button(class="menu__item menu__item--primary play-bttn") Graj
                 div(class="pause-view pause-view--light hidden")
                     div(class="pause-view__text") pause
+                div(class="instruction hidden")
+                    div(class="instruction__controls instruction__column")
+                        p(class="instruction__element")
+                            span(class="instruction__highlight") Koniec gry
+                            |
+                            | następuje w momencie zderzenia głowy węża z ogonem.
+                        p(class="instruction__element")
+                            span(class="instruction__highlight") Zdobywaj punkty
+                            |
+                            | za zjadanie ciasteczek
+                            |
+                            img(class="inline-img" src="/images/snake/cookie.png")
+                            |.
+                        p(class="instruction__element")
+                            span(class="instruction__highlight") Kontrola:
+                            ul(class="instruction__list")
+                                li(class="media-object")
+                                    img(class="media-object__image" alt="strzałki" src="/images/snake/arrow-keys.png")
+                                    p() Używaj strzałek do skręcania wężem.
+                                li(class="media-object")
+                                    img(class="media-object__image" alt="P")
+                                    p() Kliknij "P", aby zatrzymać/wznowić grę.
+                    div(class="instruction__events instruction__column")
+                        p(class="instruction__element")
+                            | Uważaj na
+                            span(class="instruction__highlight")  przeszkody
+                            |:
+                            |
+                            img(class="inline-img" alt="ogień" src="/images/snake/fire.png")
+                            |
+                            | ! Za wejście na nie wąż wydłuży się o 5.
+                        p(class="instruction__element") Wykonuj
+                            span(class="instruction__highlight")  zadania
+                            |, aby skrócić węża:
+                        ul(class="instruction__list")
+                            li() Wybór koła
+                            li() Skręcanie
+                            li() Wybór litery
+
+                    div(class="instruction__footer")
+                        button(id="instruction__go-to-menu" class="instruction__bttn menu__item--primary") Powrót
+
+
 
             span(class="letter")
             span(class="choose-object hidden")

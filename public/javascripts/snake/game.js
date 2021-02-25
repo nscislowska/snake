@@ -18,12 +18,22 @@ let timePassed;
 let isPaused = false;
 
 let startBttn = document.getElementsByClassName("play-bttn")[0];
+let instruction = document.getElementsByClassName("instruction")[0];
 let menu = document.getElementsByClassName("menu")[0];
 
 startBttn.addEventListener("click", ()=>{
         menu.style.display = "none";
         game();
 });
+document.getElementById("menu__go-to-instruction").addEventListener(
+    "click", ()=>{
+        instruction.classList.remove("hidden");
+    });
+document.getElementById("instruction__go-to-menu").addEventListener(
+    "click", ()=>{
+    instruction.classList.add("hidden");
+});
+
 
 let gameClocks = [new Timer(Timer.INTERVAL), new Timer(Timer.TIMEOUT), new Timer(Timer.INTERVAL)];
 
