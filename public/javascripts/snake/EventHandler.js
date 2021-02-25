@@ -80,7 +80,7 @@ export default class EventHandler {
             console.log(this.probableCodes);
         }
 
-        //this.code = this.eventCodes.choosing;//testing: choose triggered event
+        // this.code = this.eventCodes.choosing;//testing: choose triggered event
 
         switch(this.code){
             case(this.eventCodes.obstacle):

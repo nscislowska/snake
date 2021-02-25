@@ -17,6 +17,7 @@ export default class ChoosingEvent extends RandomEvent {
 
     clearDisplay(description, index){
         this.choosingObjects[index].classList.add('hidden');
+        this.choosingObjects[index].classList.remove(description.shape, description.color);
     }
 
     setDisplay(description, index, text){
