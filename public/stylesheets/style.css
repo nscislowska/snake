@@ -37,11 +37,10 @@ a{
   min-height: 100%;
   display: grid;
   grid-template-areas: "header"
-                       "nav"
                        "main"
                        "footer";
   grid-template-columns: auto;
-  grid-template-rows: 3em 2em 1fr auto;
+  grid-template-rows: 5em 1fr auto;
 }
 
 .footer{
