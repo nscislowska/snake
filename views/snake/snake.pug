@@ -1,0 +1,41 @@
+extends ../index
+
+append head
+    link(rel='stylesheet', href='/stylesheets/snake/snake.css')
+    link(rel='stylesheet', href='/stylesheets/snake/menu.css')
+    link(rel='stylesheet', href='/stylesheets/snake/inline-img.css')
+    link(rel='stylesheet', href='/stylesheets/snake/instruction.css')
+    link(rel='stylesheet', href='/stylesheets/snake/letter.css')
+    link(rel='stylesheet', href='/stylesheets/snake/pause.css')
+    link(rel='stylesheet', href='/stylesheets/snake/shapes.css')
+    script(src="/javascripts/snake/game.js" type="module")
+
+block snake
+    div(class="game-root")
+        div(class="top-panel")
+            div(class="box box--green message")
+                span(class="message__content")
+            div(class="box box--green score")
+                span(class="score__content") 0
+            div(class="box box--green score")
+                span(class="counter__content") 0:00
+        div(class="game-container")
+            canvas(class="game__canvas")
+            div(class="view-container")
+                include menu.pug
+                include pause.pug
+                include instruction.pug
+
+            span(class="letter")
+            span(class="choose-object shape hidden")
+            span(class="choose-object shape hidden")
+            span(class="choose-object shape hidden")
+            span(class="choose-object shape hidden")
+            span(class="choose-object shape hidden")
+
+            img(class="game__image food-image hidden" src="/images/snake/cookie.png")
+            img(class="game__image obstacle-image hidden" src="/images/snake/fire.png")
+            img(class="game__image snake-part-image hidden" src="/images/snake/snake-part.png")
+            img(class="game__image snake-head-image hidden" src="/images/snake/snake-head.png")
+
+

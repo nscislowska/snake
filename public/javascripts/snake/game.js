@@ -92,8 +92,6 @@ function initOnce(){
     }
 }
 
-
-
 function main() {
     document.addEventListener('keydown', keyboardEvents);
     gameClocks[0].start(
@@ -169,7 +167,7 @@ function keyboardEvents(event){
     const keyPressed = event.key;
 
     if(keyPressed === 'p'){
-        let pauseView = document.getElementsByClassName("pause-view")[0];
+        let pauseView = document.getElementById("pause-view");
         isPaused = !isPaused;
         if(!isPaused){
             pauseView.classList.add("hidden");

@@ -1,0 +1,11 @@
+.inline-img {
+    max-width: 100%;
+}
+
+.inline-img--x1 {
+    height: 1em;
+}
+
+.inline-img--x2 {
+    height: 2em;
+}

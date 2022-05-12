@@ -1,7 +1,7 @@
-.top-panel, .game-container {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 1rem;
+/* Appending game variables */
+.game-root{
 	--basic-size: 10px;
+	--field-bg-color: hsl(43,45%,31%);
 	--green-50: hsl(120, 80%, 50%);
 	--green-40: hsl(120, 80%, 40%);
 	--green-30: hsl(120, 80%, 35%);
@@ -10,28 +10,37 @@
 	--gray-60: hsl(180, 5%, 60%);
 	--gray-50: hsl(180, 5%, 50%);
 	--gray-40: hsl(180, 5%, 40%);
+	--menu-bttn-bg-color--primary: var(--gray-50);
+	--menu-bttn-bg-color--play: var(--green-30);
+	--menu-bttn-border--primary: 0.15em solid hsl(180, 5%, 30%);
+	--menu-bttn-border--play:  0.15em solid hsl(120,40%,25%);
+	--instuction-bg-color: var(--field-bg-color);
+	--letter-flash-color: #02fcfc;
 }
 
-.hidden{
+.game-root {
+	color: white;
+	font-size: 1rem;
+	height: 100%;
+	min-width:400px;
+	width: 100%;
+}
+
+.game-root button{
+	color: inherit;
+}
+
+.hidden {
 	display: none !important;
 }
 
-.game-holder{
-	min-width:400px;
-	width: 100%;
-	height: 100%;
-}
-
-.view-container{
+.view-container {
 	position: absolute;
 	height: 100%;
 	width: 100%;
 }
 
-.game__image{
-
-}
-.top-panel{
+.top-panel {
 	height: 3rem;
 	display: flex;
 	flex-direction: row;
@@ -39,7 +48,7 @@
 	margin: 2px 0;
 }
 
-.box--green{
+.box--green {
 	background-color: var(--green-30);
 	border-radius: 5px;
 	color: var(--gray-90);
@@ -47,7 +56,7 @@
 	font-size: 1.5rem;
 }
 
-.box{
+.box {
 	text-align: center;
 	display: flex;
 	align-items: center;
@@ -55,16 +64,16 @@
 	height: 100%;
 }
 
-.score{
+.score {
 	width: 15%;
 	font-weight: bold;
 }
 
-.message{
+.message {
 	flex-grow: 1;
 }
 
-.game-container{
+.game-container {
 	position: relative;
 	height: calc(100% - 3rem - 5px);
 	display: flex;
@@ -76,96 +85,23 @@
 	min-width:400px;
 	min-height: 450px;
 	height: 100%;
-	background: hsl(43,45%,31%);
+	background: var(--field-bg-color);
 }
-
-.input{
+/* 
+.input {
 	font-size: calc(1rem + 1vw);
 	padding: .2em .4em;
 	background-color: #e0e0e0;
 	text-align: center;
 }
 
-.input-error{
+.input-error {
 	border: 2px solid red;
 }
 
-.error-mssg{
+.error-mssg {
 	color: red;
-}
-
-.red, .red:before, .red:after{
-	background-color: #ff0000;
-	border-color: #cb0000;
-}
-
-.pink{
-	background-color: #ff00d5;
-	border-color: #a4008a;
-}
-
-.yellow{
-	background-color: #ffe600;
-	border-color: #8f8000;
-}
-
-.blue{
-	background-color: #00c4ff;
-	border-color: #0088b5;
-}
-
-.purple{
-	background-color: #bb00ff;
-	border-color: #6f0098;
-}
-
-.green{
-	background-color: #2fff00;
-	border-color: #1f9804;
-}
-
-.orange{
-	background-color: #ffa424;
-	border-color: #ac6f18;
-}
-
-.white{
-	background-color: #d2d2d2;
-	border-color: #8f8f8f;
-}
-
-.triangle{
-  width: 0;
-  height: 0;
-  border-left: .5rem solid transparent;
-  border-right: .5rem solid transparent;
-  border-bottom: 1rem solid;
-}
-
-.circle{
-	border-radius: 50%;
-}
-
-.letter{
-	position: absolute;
-	font-size: 1.5rem;
-	display: block;
-	color:white;
-	width: 1rem;
-	height: 1rem;
-}
-
-.choose-object{
-	position: absolute;
-	font-size: .7rem;
-	display: block;
-	color:black;
-	width: 1.3rem;
-	height: 1.3rem;
-	text-align: center;
-	line-height: 1.3rem;
-	border: 1px solid;
-}
+} */
 
 .snake {
 	display: inline-block;

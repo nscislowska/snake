@@ -1,0 +1,64 @@
+div(class="instruction hidden")
+    div(class="instruction__controls instruction__column")
+        div(class="instruction__element")
+            span(class="instruction__highlight") Koniec gry
+            |
+            | następuje w momencie zderzenia głowy węża z ogonem.
+        div(class="instruction__element")
+            h3(class="instruction__highlight") Kontrola
+            div(class="instruction__keyboard-usage")
+                figure(class="instruction__keyboard-usage__element")
+                    img(src="/images/snake/arrow-keys.png" alt="strzałki")
+                    figcaption() sterowanie
+                figure(class="instruction__keyboard-usage__element")
+                    img(src="/images/snake/p-key.png" alt="klawisz P")
+                    figcaption() pauza/start
+        div(class="instruction__element")
+            span(class="instruction__highlight") Zdobywaj punkty 
+            |za zjadanie ciasteczek 
+            img(class="inline-img--x1" src="/images/snake/cookie.png" alt="")
+            |.
+        div(class="instruction__element")
+            span(class="instruction__highlight") Uważaj 
+            |na ogień 
+            img(class="inline-img--x1" src="/images/snake/fire.png" alt="")
+            |! Jeśli zderzysz się z nim, wąż wydłuży się o 5.
+    div(class="instruction__events instruction__column")
+        div(class="instruction__element") 
+            span(class="instruction__highlight") Wykonuj 
+            |zadania, aby skrócić węża o 3:
+            ol(class="instruction__list accordion")
+                li() 
+                    h4 Zapamiętaj kolor
+                    p W losowym miejscu pojawi się na chwilę koło - zapamiętaj jego kolor!
+                        br
+                        img(class="inline-img--x2" src="/images/snake/circle.png" alt="Przykład: Pojawia się niebieskie koło.")
+                        br
+                        | Następnie na 3s w losowych miejscach pojawi się kilka kolorowych kół oznaczonych cyframi - wybierz na klawiaturze numer koła o zapamiętanym kolorze.
+                        br
+                        img(class="inline-img--x2" src="/images/snake/circles.png" alt="Przykład: 1 - koło zielone, 2 - koło niebieskie, 3 - koło różowe")
+                li() 
+                    h4 Skręć jak karzą
+                    p U góry pojawi się komenda, aby skręcić określoną liczbę razy w lewo/prawo/górę/dół - zapamiętaj ją!
+                        br
+                        img(class="inline-img--x2" src="/images/snake/turn.png" alt="Przykład: 'Skręć 5 razy w prawo'.") 
+                        br
+                        |Zaraz potem zacznie się odliczanie czasu do końca zadania - masz 15s na skręcenie wężem zgodnie z instrukcją. 
+                        br
+                        img(class="inline-img--x2" src="/images/snake/turn-countdown.png" alt="Komunikat: 'Pozostały czas: 15s'.")
+                li() 
+                    h4 Zauważ literę
+                    p Na 3 seskundy w losowym miejscu pojawi się litera: przez 2 sekundy będzie półprzezroczysta 
+                        img(class="inline-img--x1" src="/images/snake/letter-transparent.png" alt="") 
+                        |, a przez ostatnią sekundę w pełni widoczna 
+                        img(class="inline-img--x1" src="/images/snake/letter-opaque.png" alt="")
+                        |. Póki litera jest wyświetlana wybierz ją na klawiaturze.
+                        br
+                        |Czasem wyświetlenie litery poprzedzi mignięcie 
+                        span(class="letter-flash-color") niebieskiego 
+                        |prostokąta 
+                        img(class="inline-ing--x1" src="images/snake/letter-flash.png" alt="")
+                        |.
+    div(class="instruction__footer")
+        button(id="instruction__go-to-menu" class="instruction__bttn menu__item--primary") Powrót
+        

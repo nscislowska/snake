@@ -1,7 +1,5 @@
-This project is a snake game with extra elements:
-<ul>
-  <li>3 types of tasks that done successfully reward with shortening the snake,</li>
-  <li>obstacles that collided with punish by elongating the snake.</li>
- </ul>
+Project: <b>Snake</b> game
+Language: Polish
+Tech: JavaScript, CSS3, Pug, Node.js + Express
 
 <b>Play this game at https://snake-111.herokuapp.com//.</b>

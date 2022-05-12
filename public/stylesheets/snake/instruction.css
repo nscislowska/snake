@@ -1,49 +1,51 @@
-.instruction{
-    background: var(--primary-bg-dark);
-    color: var(--primary-color);
-    height:100%;
-    width:100%;
-    padding: 10px;
-    position: absolute;
+.instruction {
+    background: var(--instuction-bg-color);
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 2fr;
     grid-template-rows: 1fr auto;
     grid-template-areas: "controls events"
                          "footer footer";
-    grid-column-gap: 5px;
-    top: 0;
+    grid-column-gap: 0.5em;
+    height:100%;
+    letter-spacing: 0.1em;
     line-height: 1.7em;
+    overflow-y: scroll;
+    padding: 1em;
+    position: absolute;
+    top: 0;
+    width:100%;
 }
 
-.instruction__bttn{
+.instruction__bttn {
     padding: 0.5em;
     font-size: 1.2em;
 }
 
-.instruction__footer{
+.instruction__footer {
     grid-area: footer;
     grid-column-end: span 2;
+    margin-top: 1em;
     text-align: center;
 }
 
-.instruction__element + .instruction__element{
-    margin-top: 10px;
+.instruction__element + .instruction__element {
+    margin-top: 0.5em;
 }
 
-.instruction__highlight{
+.instruction__highlight {
     font-size: 1.2em;
     font-weight: bold;
 }
 
-.instruction__list{
+.instruction__list {
     padding: 0 2em;
 }
 
-.instruction__controls{
+.instruction__controls {
     grid-area: controls;
 }
 
-.instruction__events{
+.instruction__events {
     grid-area: events;
 }
 
@@ -60,19 +62,4 @@
 .instruction__keyboard-usage img {
     margin: auto;
     height: 3em;
-}
-
-/* TO DO: move to a seperate file */
-.inline-img{
-    height: 1em;
-}
-
-.media-object{
-    display: block;
-    overflow: hidden;
-}
-
-.media-object__image{
-    width: 20%;
-    float: left;
 }

@@ -1,16 +1,12 @@
-extends layout
+doctype html
+html
+  head
+      block head
+        title= title
+        link(rel='stylesheet', href='/stylesheets/index.css')
+        link(rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" )
 
-block content
-  div(class="tile-grid")
-    a(class="tile" href="/games/snake")
-      div(class="tile__info")
-        h4(class="tile__title")="snake"
-        p(class="tile__description")="classic snake"
-    a(class="tile" href="/games/bandit")
-      div(class="tile__info")
-        h4(class="tile__title")="Badanie"
-        p(class="tile__description")="Jednoręki bandyta"
-    div(class="tile")
-      h4="tile 3"
-    div(class="tile")
-      h4="tile 4"
+  body
+  block content
+    main(id="game" class="fill-window")
+        block snake

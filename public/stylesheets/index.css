@@ -1,0 +1,32 @@
+.fill-window {
+  height:100vh;
+  width: 100vw;
+}
+
+#game {
+  min-width: 50em;
+  position: relative;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+html, body {
+  background: hsl(180, 5%, 50%);
+  color: white;
+  font: 1em Tahoma, Verdana, sans-serif;
+  height: 100%;
+  overflow-y: hidden;
+  width: 100%;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+
